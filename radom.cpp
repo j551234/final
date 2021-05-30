@@ -20,6 +20,7 @@ int main() {
    
     // Close file
     myFile.close();
-
+   prinf("hello")
     return 0;
+ 
 }
