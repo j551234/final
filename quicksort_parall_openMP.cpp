@@ -2,10 +2,12 @@
 #include<omp.h>
 #include<math.h>
 #include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
-#define ARRAY_MAX_SIZE 100000
-
-int arr[ARRAY_MAX_SIZE];
+// int arr[ARRAY_MAX_SIZE];
 
 
 void swap(int* a, int* b)
@@ -38,6 +40,28 @@ int partition (int arr[], int low, int high)
 	return (i + 1);
 }
 
+bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
+{
+    // Open the File
+    std::ifstream in(fileName.c_str());
+    // Check if object is valid
+    if(!in)
+    {
+        std::cerr << "Cannot open the File : "<<fileName<<std::endl;
+        return false;
+    }
+    std::string str;
+    // Read the next line from File untill it reaches the end.
+    while (std::getline(in, str))
+    {
+        // Line contains string of length > 0 then save it in vector
+        if(str.size() > 0)
+            vecOfStrs.push_back(stoi(str));
+    }
+    //Close The File
+    in.close();
+    return true;
+}
 /* The main function that implements QuickSort
 arr[] --> Array to be sorted,
 low --> Starting index,
@@ -79,14 +103,21 @@ int main()
 
 
 	double start_time, run_time;
-	for( int i = 0; i < ARRAY_MAX_SIZE-1; i++ )
+	
+    std::vector<int> vecOfStr;
+    // Get the contents of file in a vector
+    bool result = getFileContent("radom.txt", vecOfStr);
+    int arr[vecOfStr.size()];
+    if(result)
     {
-       arr[i] = rand() % 50 +1;
-      // printf("%d\n", arr[i]);
-
-    }
+   
+        // Print the vector contents
+   		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
+	}
+       
 	int n = sizeof(arr)/sizeof(arr[0]);
 
+printf("n= %d\n",n);
 
 		//int pi = partition(arr, 0, n-1);
 /*#pragma omp parallel sections
@@ -100,7 +131,7 @@ int main()
 			quickSort(arr, pi + 1, n-1);
 		}
 }*/
-omp_set_num_threads(2);//調整thread數量
+omp_set_num_threads(16);//調整thread數量
 start_time = omp_get_wtime();
 
 #pragma omp parallel
@@ -123,9 +154,9 @@ printf("Thread is %d\n",id);
 	printf("\n Execution time was %lf seconds\n ",run_time);
 	//printf("Sorted array: \n");
 	//printArray(arr, n);
-  printf("\n");
-  int nthrds = omp_get_num_threads();
-  printf("Number of threads %d\n", nthrds);
+  // printf("\n");
+  // int nthrds = omp_get_num_threads();
+  // printf("Number of threads %d\n", nthrds);
            
 	return 0;
 }
