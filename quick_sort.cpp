@@ -1,46 +1,100 @@
-
+#include <vector>
+#include <time.h>
 #include <iostream>
+#include <time.h>
+#include <fstream>  
+
+
+bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
+{
+    // Open the File
+    std::ifstream in(fileName.c_str());
+    // Check if object is valid
+    if(!in)
+    {
+        std::cerr << "Cannot open the File : "<<fileName<<std::endl;
+        return false;
+    }
+    std::string str;
+    // Read the next line from File untill it reaches the end.
+    while (std::getline(in, str))
+    {
+        // Line contains string of length > 0 then save it in vector
+        if(str.size() > 0)
+            vecOfStrs.push_back(stoi(str));
+    }
+    //Close The File
+    in.close();
+    return true;
+}
+
 void swap(int *a, int *b){
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-int Partition(int *arr, int front, int end){
-    int pivot = arr[end];
+int Partition(std::vector<int> &array, int front, int end){
+    int pivot = array[end];
     int i = front -1;
     for (int j = front; j < end; j++) {
-        if (arr[j] < pivot) {
+        if (array[j] < pivot) {
             i++;
-            swap(&arr[i], &arr[j]);
+            swap(&array[i], &array[j]);
         }
     }
     i++;
-    swap(&arr[i], &arr[end]);
+    swap(&array[i], &array[end]);
     return i;
 }
-void QuickSort(int *arr, int front, int end){
+void QuickSort(std::vector<int> &array, int front, int end){
     if (front < end) {
-        int pivot = Partition(arr, front, end);
-        QuickSort(arr, front, pivot - 1);
-        QuickSort(arr, pivot + 1, end);
+        int pivot = Partition(array, front, end);
+        QuickSort(array, front, pivot - 1);
+        QuickSort(array, pivot + 1, end);
     }
 }
-void PrintArray(int *arr, int size){
+void Printarrayay(int *array, int size){
     for (int i = 0; i < size; i++) {
-        std::cout << arr[i] << " ";
+        std::cout << array[i] << " ";
     }
     std::cout << std::endl;
 }
 int main() {
+	
+	time_t c_start, t_start, c_end, t_end;
+	
 
-    int n = 9;
-    int arr[] = {9, 4, 1, 6, 7, 3, 8, 2, 5};
-    std::cout << "original:\n";
-    PrintArray(arr, n);
+    std::vector<int> vecOfStr;
+    // Get the contents of file in a vector
+    bool result = getFileContent("radom.txt", vecOfStr);
+    int array[vecOfStr.size()];
+ 
+    if(result)
+    {
+    
+        // Print the vector contents
+   		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
+	}
+    
+ 
+	c_start = clock(); //s 
+	
+	
+	t_start = time(NULL);  //ms
 
-    QuickSort(arr, 0, n-1);
 
-    std::cout << "sorted:\n";
-    PrintArray(arr, n);
+int checkEnd =vecOfStr.size()-1;
+    QuickSort(vecOfStr, 0, checkEnd);
+
+   	c_end   = clock();
+	t_end	= time(NULL);
+
+	printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
+	printf("The pause used %f s by time()\n",difftime(t_end,t_start));
+
+//	for(int i=0 ;i <vecOfStr.size();i++){
+//		       std::cout << vecOfStr.at(i);
+//	          std::cout << "\n";
+//	}
     return 0;
 }
