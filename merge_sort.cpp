@@ -1,7 +1,33 @@
 // C++ code
 #include <iostream>
 #include <vector>
-const int Max = 1000;
+#include <time.h>
+#include <fstream>  
+const int Max = 10000000;
+using namespace std;
+
+bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
+{
+    // Open the File
+    std::ifstream in(fileName.c_str());
+    // Check if object is valid
+    if(!in)
+    {
+        std::cerr << "Cannot open the File : "<<fileName<<std::endl;
+        return false;
+    }
+    std::string str;
+    // Read the next line from File untill it reaches the end.
+    while (std::getline(in, str))
+    {
+        // Line contains string of length > 0 then save it in vector
+        if(str.size() > 0)
+            vecOfStrs.push_back(stoi(str));
+    }
+    //Close The File
+    in.close();
+    return true;
+}
 
 void Merge(std::vector<int> &Array, int front, int mid, int end){
 
@@ -39,24 +65,47 @@ void MergeSort(std::vector<int> &array, int front, int end){
     }
 }
 
-void PrintArray(std::vector<int> &array){
-    for (int i = 0; i < array.size(); i++) {
-        std::cout << array[i] << " ";
-    }
-    std::cout << std::endl;
-}
+
 
 int main() {
+	
+	
+	time_t c_start, t_start, c_end, t_end;
+	
 
-    int arr[] = {5,3,8,6,2,7,1,4};
-    std::vector<int> array(arr, arr+sizeof(arr)/sizeof(int));
 
-    std::cout << "original:\n";
-    PrintArray(array);
+    std::vector<int> vecOfStr;
+    // Get the contents of file in a vector
+    bool result = getFileContent("radom.txt", vecOfStr);
+    int arr[vecOfStr.size()];
+ 
+    if(result)
+    {
+    
+        // Print the vector contents
+   		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
+	}
+    
+ 
+	c_start = clock(); //s 
+	
+	
+	t_start = time(NULL);  //ms
 
-    MergeSort(array, 0, 7);
-    std::cout << "sorted:\n";
-    PrintArray(array);
+
+    MergeSort(vecOfStr, 0, vecOfStr.size());
+    
+   	c_end   = clock();
+	t_end	= time(NULL);
+
+	printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
+	printf("The pause used %f s by time()\n",difftime(t_end,t_start));
+
+//	for(int i=0 ;i <vecOfStr.size();i++){
+//		       cout << vecOfStr.at(i);
+//	         cout << "\n";
+//	}
+
 
     return 0;
 }
