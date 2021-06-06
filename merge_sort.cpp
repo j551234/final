@@ -29,13 +29,13 @@ bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
     return true;
 }
 
-void Merge(std::vector<int> &Array, int front, int mid, int end){
+void Merge(std::vector<int> &array, int front, int mid, int end){
 
     // 利用 std::vector 的constructor, 
     // 把array[front]~array[mid]放進 LeftSub[]
     // 把array[mid+1]~array[end]放進 RightSub[]
-    std::vector<int> LeftSub(Array.begin()+front, Array.begin()+mid+1),
-                     RightSub(Array.begin()+mid+1, Array.begin()+end+1);
+    std::vector<int> LeftSub(array.begin()+front, array.begin()+mid+1),
+                     RightSub(array.begin()+mid+1, array.begin()+end+1);
 
     LeftSub.insert(LeftSub.end(), Max);      // 在LeftSub[]尾端加入值為 Max 的元素
     RightSub.insert(RightSub.end(), Max);    // 在RightSub[]尾端加入值為 Max 的元素
@@ -45,11 +45,11 @@ void Merge(std::vector<int> &Array, int front, int mid, int end){
     for (int i = front; i <= end; i++) {
 
         if (LeftSub[idxLeft] <= RightSub[idxRight] ) {
-            Array[i] = LeftSub[idxLeft];
+            array[i] = LeftSub[idxLeft];
             idxLeft++;
         }
         else{
-            Array[i] = RightSub[idxRight];
+            array[i] = RightSub[idxRight];
             idxRight++;
         }
     }
@@ -77,13 +77,13 @@ int main() {
     std::vector<int> vecOfStr;
     // Get the contents of file in a vector
     bool result = getFileContent("radom.txt", vecOfStr);
-    int arr[vecOfStr.size()];
+    int array[vecOfStr.size()];
  
     if(result)
     {
     
         // Print the vector contents
-   		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
+   		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
 	}
     
  
@@ -105,6 +105,17 @@ int main() {
 //		       cout << vecOfStr.at(i);
 //	         cout << "\n";
 //	}
+
+
+//write out to fuke
+
+    fstream myFile;
+    myFile.open("merge_sorted.txt", ios::app);
+    for (int i = 0; i < vecOfStr.size();i++) {
+          myFile <<   vecOfStr.at(i) << endl;
+    }
+ 
+   myFile.close();
 
 
     return 0;

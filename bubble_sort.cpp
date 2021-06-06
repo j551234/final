@@ -56,21 +56,20 @@ time_t c_start, t_start, c_end, t_end;
     std::vector<int> vecOfStr;
     // Get the contents of file in a vector
     bool result = getFileContent("radom.txt", vecOfStr);
-    int arr[vecOfStr.size()];
+    int array[vecOfStr.size()];
  
     if(result)
     {
     
         // Print the vector contents
-   		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
+   		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
 	}
 	//s 
  	 c_start = clock(); 
-	
 	 //ms
 	t_start = time(NULL); 
 	
-    doBubbleSort(arr, vecOfStr.size());
+    doBubbleSort(array, vecOfStr.size());
     
     c_end   = clock();
 	t_end	= time(NULL);
@@ -82,8 +81,16 @@ time_t c_start, t_start, c_end, t_end;
 //        cout << arr[i];
 //          cout << "\n";
 //    }
+
+//write out to fuke
+
+    fstream myFile;
+    myFile.open("bubble_sorted.txt", ios::app);
+    for (int i = 0; i < vecOfStr.size();i++) {
+          myFile <<   array[i] << endl;
+    }
  
- 
+   myFile.close();
     return 0;
 }
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>  
+using namespace std;
 
 
 bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
@@ -83,7 +84,7 @@ int main() {
 	t_start = time(NULL);  //ms
 
 
-int checkEnd =vecOfStr.size()-1;
+	int checkEnd =vecOfStr.size()-1;
     QuickSort(vecOfStr, 0, checkEnd);
 
    	c_end   = clock();
@@ -96,5 +97,16 @@ int checkEnd =vecOfStr.size()-1;
 //		       std::cout << vecOfStr.at(i);
 //	          std::cout << "\n";
 //	}
+
+//write out to fuke
+
+    fstream myFile;
+    myFile.open("quick_sorted.txt", ios::app);
+    for (int i = 0; i < vecOfStr.size();i++) {
+          myFile <<   vecOfStr.at(i) << endl;
+    }
+ 
+   myFile.close();
+   
     return 0;
 }
