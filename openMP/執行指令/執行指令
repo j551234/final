@@ -1,0 +1,13 @@
+
+
+1. bubble sort openMP:
+執行編譯 : g++ bubbleSort_openMP.cpp -o bubbleSort_openMP -fopenmp 
+執行檔案 : ./bubbleSort_openMP
+
+2. quick sort openMP:
+執行編譯 : g++ quicksort_parall_openMP.cpp -o quicksort_parall_openMP -fopenmp 
+執行檔案 : ./quicksort_parall_openMP
+
+3. merge sort openMP:
+執行編譯 : g++ merge_parall_openMP.cpp -o merge_parall_openMP -fopenmp 
+執行檔案 : ./merge_parall_openMP
