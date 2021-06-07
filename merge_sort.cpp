@@ -3,7 +3,7 @@
 #include <vector>
 #include <time.h>
 #include <fstream>  
-const int Max = 10000000;
+const int Max = 100000000;
 using namespace std;
 
 bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
@@ -72,28 +72,26 @@ int main() {
 	
 	time_t c_start, t_start, c_end, t_end;
 	
-
-
+   // Get the contents of file in a vector
     std::vector<int> vecOfStr;
-    // Get the contents of file in a vector
-    bool result = getFileContent("radom.txt", vecOfStr);
+    bool result = getFileContent("test.txt", vecOfStr);
     int array[vecOfStr.size()];
  
     if(result)
     {
-    
         // Print the vector contents
    		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
 	}
     
  
 	c_start = clock(); //s 
-	
-	
 	t_start = time(NULL);  //ms
 
-
+ 	std::cout << "start  merge sorting\n";
+ 	
     MergeSort(vecOfStr, 0, vecOfStr.size());
+    
+    std::cout << "end  merge sorting\n";
     
    	c_end   = clock();
 	t_end	= time(NULL);
@@ -101,20 +99,20 @@ int main() {
 	printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
 	printf("The pause used %f s by time()\n",difftime(t_end,t_start));
 
-//	for(int i=0 ;i <vecOfStr.size();i++){
-//		       cout << vecOfStr.at(i);
-//	         cout << "\n";
-//	}
-
-
-//write out to fuke
-
+	//	for(int i=0 ;i <vecOfStr.size();i++){
+	//		       cout << vecOfStr.at(i);
+	//	         cout << "\n";
+	//	}
+	
+	
+	//write out to file
     fstream myFile;
+    // delete if exists
+    std::remove("quick_sorted.txt");
     myFile.open("merge_sorted.txt", ios::app);
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   vecOfStr.at(i) << endl;
     }
- 
    myFile.close();
 
 

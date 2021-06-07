@@ -29,11 +29,13 @@ bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
     return true;
 }
 
+
 void swap(int *a, int *b){
     int temp = *a;
     *a = *b;
     *b = temp;
 }
+
 int Partition(std::vector<int> &array, int front, int end){
     int pivot = array[end];
     int i = front -1;
@@ -47,6 +49,7 @@ int Partition(std::vector<int> &array, int front, int end){
     swap(&array[i], &array[end]);
     return i;
 }
+
 void QuickSort(std::vector<int> &array, int front, int end){
     if (front < end) {
         int pivot = Partition(array, front, end);
@@ -54,58 +57,53 @@ void QuickSort(std::vector<int> &array, int front, int end){
         QuickSort(array, pivot + 1, end);
     }
 }
-void Printarrayay(int *array, int size){
-    for (int i = 0; i < size; i++) {
-        std::cout << array[i] << " ";
-    }
-    std::cout << std::endl;
-}
+
 int main() {
 	
 	time_t c_start, t_start, c_end, t_end;
 	
-
+   // Get the contents of file in a vector
     std::vector<int> vecOfStr;
-    // Get the contents of file in a vector
-    bool result = getFileContent("radom.txt", vecOfStr);
+    bool result = getFileContent("test.txt", vecOfStr);
     int array[vecOfStr.size()];
- 
     if(result)
     {
-    
         // Print the vector contents
    		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
 	}
     
+    
  
 	c_start = clock(); //s 
-	
-	
 	t_start = time(NULL);  //ms
 
-
-	int checkEnd =vecOfStr.size()-1;
-    QuickSort(vecOfStr, 0, checkEnd);
-
+ 	std::cout << "start  quick sorting\n";
+ 	
+    QuickSort(vecOfStr, 0, vecOfStr.size()-1);
    	c_end   = clock();
 	t_end	= time(NULL);
+	
+	 std::cout << "end  quick sorting\n";
 
 	printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
 	printf("The pause used %f s by time()\n",difftime(t_end,t_start));
 
-//	for(int i=0 ;i <vecOfStr.size();i++){
-//		       std::cout << vecOfStr.at(i);
-//	          std::cout << "\n";
-//	}
-
-//write out to fuke
-
+	//	for(int i=0 ;i <vecOfStr.size();i++){
+	//		       std::cout << vecOfStr.at(i);
+	//	          std::cout << "\n";
+	//	}
+	
+	
+	
+	//write out to filee
     fstream myFile;
+    // delete if exists
+    std::remove("quick_sorted.txt");
     myFile.open("quick_sorted.txt", ios::app);
+
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   vecOfStr.at(i) << endl;
     }
- 
    myFile.close();
    
     return 0;

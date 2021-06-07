@@ -6,15 +6,19 @@
 using namespace std;
 
 
+void swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 void doBubbleSort(int nums[], int length) {
 
     int a, b, temp;
     for (int a = 0;a < length - 1; a++) {
         for (int b = 0; b < length - 1 - a; b++) {
             if (nums[b] > nums[b + 1]) {
-                temp = nums[b];
-                nums[b] = nums[b + 1];
-                nums[b + 1] = temp;
+         		swap(&nums[b], &nums[b+1]);
             }
 
         }
@@ -52,24 +56,24 @@ bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
 int main()
 {
 
-time_t c_start, t_start, c_end, t_end;
-    std::vector<int> vecOfStr;
+	time_t c_start, t_start, c_end, t_end;
     // Get the contents of file in a vector
-    bool result = getFileContent("radom.txt", vecOfStr);
+    std::vector<int> vecOfStr;
+    bool result = getFileContent("test.txt", vecOfStr);
     int array[vecOfStr.size()];
  
     if(result)
     {
-    
         // Print the vector contents
    		std::copy(vecOfStr.begin(), vecOfStr.end(), array);
 	}
-	//s 
- 	 c_start = clock(); 
-	 //ms
-	t_start = time(NULL); 
+
+ 	c_start = clock();  	//s 
+	t_start = time(NULL);  //ms
 	
+	std::cout << "start  bubble sorting\n";
     doBubbleSort(array, vecOfStr.size());
+    std::cout << "end  bubble sorting\n";
     
     c_end   = clock();
 	t_end	= time(NULL);
@@ -85,6 +89,8 @@ time_t c_start, t_start, c_end, t_end;
 //write out to fuke
 
     fstream myFile;
+    // delete if exists
+    std::remove("quick_sorted.txt");
     myFile.open("bubble_sorted.txt", ios::app);
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   array[i] << endl;
