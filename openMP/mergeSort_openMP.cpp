@@ -63,8 +63,8 @@ void MergeSort(std::vector<int> &array, int front, int end){
         #pragma omp task firstprivate (array, front, mid)
         MergeSort(array, front, mid);    // 繼續divide矩陣的前半段subarray
         #pragma omp task firstprivate (array, front, mid)
-        MergeSort(array, mid+1, end);
-        #pragma omp taskwait    // 繼續divide矩陣的後半段subarray
+        MergeSort(array, mid+1, end);// 繼續divide矩陣的後半段subarray
+        #pragma omp taskwait    
         Merge(array, front, mid, end);   // 將兩個subarray做比較, 並合併出排序後的矩陣
     }
 }
@@ -74,9 +74,6 @@ void MergeSort(std::vector<int> &array, int front, int end){
 int main() {
 	
 	double start, stop;
-	// time_t c_start, t_start, c_end, t_end;
-	
-
 
     std::vector<int> vecOfStr;
     // Get the contents of file in a vector
@@ -90,11 +87,6 @@ int main() {
    		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
 	}
     
- 
-	// c_start = clock(); //s 
-	
-	
-	// t_start = time(NULL);  //ms
     omp_set_num_threads(4);//調整thread數量
 start = omp_get_wtime();
 #pragma omp parallel
@@ -104,11 +96,9 @@ start = omp_get_wtime();
     #pragma omp single
     MergeSort(vecOfStr, 0, vecOfStr.size());
     }
-   	// c_end   = clock();
-	// t_end	= time(NULL);
+
 stop = omp_get_wtime();
-	// printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
-	// printf("The pause used %f s by time()\n",difftime(t_end,t_start));
+
     printf("\nTime: %g\n",stop-start);
 
 //	for(int i=0 ;i <vecOfStr.size();i++){
@@ -116,6 +106,13 @@ stop = omp_get_wtime();
 //	         cout << "\n";
 //	}
 
+fstream myFile;
+    myFile.open("merge_sorted_openMP.txt", ios::app);
+    for (int i = 0; i < vecOfStr.size();i++) {
+          myFile <<   vecOfStr.at(i) << endl;
+    }
+ 
+   myFile.close();
 
     return 0;
 }
