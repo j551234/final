@@ -108,7 +108,7 @@ int main() {
 	//write out to file
     fstream myFile;
     // delete if exists
-    std::remove("quick_sorted.txt");
+    std::remove("merge_sorted.txt");
     myFile.open("merge_sorted.txt", ios::app);
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   vecOfStr.at(i) << endl;

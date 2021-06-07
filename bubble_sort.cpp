@@ -90,7 +90,7 @@ int main()
 
     fstream myFile;
     // delete if exists
-    std::remove("quick_sorted.txt");
+    std::remove("bubble_sorted.txt");
     myFile.open("bubble_sorted.txt", ios::app);
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   array[i] << endl;
