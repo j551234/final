@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+using namespace std;
 
 void swap();
 bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
@@ -52,18 +53,12 @@ int main () {
    		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
 	}
 
-	// int SIZE =1<<8;
-	// int A[SIZE];
-	// for(int i=0;i<SIZE;i++)
-	// {
-	//     A[i]=rand()%SIZE;
-	// }
-	//int A[5] = {6,9,1,3,7};
 	int N = vecOfStr.size();
 	int i=0, j=0; 
 	int first;
 	double start,end;
-	omp_set_num_threads(2);//調整thread數量
+	omp_set_num_threads(8);//調整thread數量
+
 	start=omp_get_wtime();
 	for( i = 0; i < N-1; i++ )
 	{
@@ -77,15 +72,22 @@ int main () {
 				swap( &arr[ j ], &arr[ j+1 ] );
 			}
 		}
-// int id = omp_get_thread_num();
-// 		printf("Thread is %d\n",id);
+
 	}
 end=omp_get_wtime();
-	for(i=0;i<N;i++)
-	{
-		printf(" %d",arr[i]);
-	}
+	// for(i=0;i<N;i++)
+	// {
+	// 	printf(" %d",arr[i]);
+	// }
 
 printf("\n-------------------------\n Time Parallel= %f",(end-start));
+
+    fstream myFile;
+    myFile.open("bubble_sorted_OpenMP.txt", ios::app);
+    for (int i = 0; i < vecOfStr.size();i++) {
+          myFile <<   arr[i] << endl;
+    }
+ 
+   myFile.close();
 return 0 ;
 }
