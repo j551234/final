@@ -87,9 +87,9 @@ int main() {
    		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
 	}
     
-    omp_set_num_threads(4);//調整thread數量
-start = omp_get_wtime();
-#pragma omp parallel
+    omp_set_num_threads(16);//調整thread數量
+    start = omp_get_wtime();
+    #pragma omp parallel
     {
         int id = omp_get_thread_num();
         printf("Thread is %d\n",id);
