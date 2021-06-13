@@ -100,7 +100,7 @@ int main() {
 
     std::vector<int> vecOfStr;
     // Get the contents of file in a vector
-    bool result = getFileContent("radom.txt", vecOfStr);
+    bool result = getFileContent("test.txt", vecOfStr);
     int N = vecOfStr.size();
 	int*X = (int*) malloc(N * sizeof(int));
     int*tmp = (int*) malloc(N * sizeof(int));
