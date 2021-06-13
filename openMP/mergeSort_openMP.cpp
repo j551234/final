@@ -100,7 +100,7 @@ int main() {
    		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
 	}
     
-    omp_set_num_threads(8);//調整thread數量
+    omp_set_num_threads(2);//調整thread數量
     start = omp_get_wtime();
     // #pragma omp parallel
     // {
@@ -108,8 +108,6 @@ int main() {
     // #pragma omp single
     MergeSort(vecOfStr, 0, vecOfStr.size());
     // }
-    printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
-    printf("The pause used %f s by time()\n",difftime(t_end,t_start));
 stop = omp_get_wtime();
 
     printf("\nTime: %g\n",stop-start);
