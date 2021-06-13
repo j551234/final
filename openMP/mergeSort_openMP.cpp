@@ -4,7 +4,7 @@
 #include <time.h>
 #include <fstream>  
 #include <omp.h>
-const int Max = 10000000;
+const int Max = 500000;
 using namespace std;
 
 bool getFileContent(std::string fileName, std::vector<int> & vecOfStrs)
@@ -60,11 +60,23 @@ void MergeSort(std::vector<int> &array, int front, int end){
                                          // front與end為矩陣範圍
     if (front < end) {                   // 表示目前的矩陣範圍是有效的
         int mid = (front+end)/2;         // mid即是將矩陣對半分的index
-        #pragma omp task firstprivate (array, front, mid)
+        // #pragma omp task firstprivate (array, front, mid)
+         // #pragma omp parallel sections num_threads(8) 
+
+    #pragma omp parallel sections 
+    {
+            // printf("Thread %d begins recursive section\n", omp_get_thread_num());
+        #pragma omp section
+        {   //printf("Thread %d begins recursive call\n", omp_get_thread_num());
         MergeSort(array, front, mid);    // 繼續divide矩陣的前半段subarray
-        #pragma omp task firstprivate (array, front, mid)
+        }
+        // #pragma omp task firstprivate (array, front, mid)
+        
+        #pragma omp section
+        {   //printf("Thread %d begins recursive call\n", omp_get_thread_num());
         MergeSort(array, mid+1, end);// 繼續divide矩陣的後半段subarray
-        #pragma omp taskwait    
+        }
+    }   
         Merge(array, front, mid, end);   // 將兩個subarray做比較, 並合併出排序後的矩陣
     }
 }
@@ -73,6 +85,7 @@ void MergeSort(std::vector<int> &array, int front, int end){
 
 int main() {
 	
+    time_t c_start, t_start, c_end, t_end;
 	double start, stop;
 
     std::vector<int> vecOfStr;
@@ -87,16 +100,16 @@ int main() {
    		std::copy(vecOfStr.begin(), vecOfStr.end(), arr);
 	}
     
-    omp_set_num_threads(16);//調整thread數量
+    omp_set_num_threads(8);//調整thread數量
     start = omp_get_wtime();
-    #pragma omp parallel
-    {
-        int id = omp_get_thread_num();
-        printf("Thread is %d\n",id);
-    #pragma omp single
+    // #pragma omp parallel
+    // {
+        
+    // #pragma omp single
     MergeSort(vecOfStr, 0, vecOfStr.size());
-    }
-
+    // }
+    printf("The pause used %f ms by clock()\n",difftime(c_end,c_start)); 
+    printf("The pause used %f s by time()\n",difftime(t_end,t_start));
 stop = omp_get_wtime();
 
     printf("\nTime: %g\n",stop-start);
@@ -107,6 +120,7 @@ stop = omp_get_wtime();
 //	}
 
 fstream myFile;
+    std::remove("merge_sorted_openMP.txt");
     myFile.open("merge_sorted_openMP.txt", ios::app);
     for (int i = 0; i < vecOfStr.size();i++) {
           myFile <<   vecOfStr.at(i) << endl;
